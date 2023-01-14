@@ -63,7 +63,7 @@ jobs:
 
       - name: Build rootfs
         run: |
-          ./genimage.sh
+          sudo ./genimage.sh
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
