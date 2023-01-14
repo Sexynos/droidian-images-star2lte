@@ -15,7 +15,7 @@ losetup ${DEVICE_ROOTFS} ./data/rootfs.img
 mount ${DEVICE_ROOTFS} ${ROOTFS_PATH}
 echo "Installing dependencies"
 apt update
-apt install qemu-user-static -y
+apt install qemu-user-static img2simg -y
 echo "Downloading adaptation"
 wget -nv https://mirror.bardia.tech/exynos9810/pool/main/adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P ./rootfs/
 wget -nv https://mirror.bardia.tech/exynos9810/pool/main/adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P ./rootfs/
