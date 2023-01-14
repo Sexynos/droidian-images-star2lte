@@ -17,8 +17,8 @@ echo "Installing dependencies"
 apt update
 apt install qemu-user-static -y
 echo "Downloading adaptation"
-wget -nv adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
-wget -nv adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
+wget -nv https://mirror.bardia.tech/exynos9810/pool/main/adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
+wget -nv https://mirror.bardia.tech/exynos9810/pool/main/adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
 cp /usr/bin/qemu-aarch64-static ./rootfs/usr/bin/
 echo "Applying adaptation"
 chroot ./rootfs/ qemu-aarch64-static /bin/bash -c 'export PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin" && rm -f /etc/systemd/system/dbus-org.bluez.service && systemctl mask systemd-resolved systemd-timesyncd upower bluetooth && dpkg -i /*.deb && rm /*.deb /deb -rf && systemctl enable apt-fix samsung-hwc epoch altresolv upoweralt bluetoothalt batman'
