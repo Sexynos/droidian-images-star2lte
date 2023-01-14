@@ -64,18 +64,7 @@ vgscan --mknodes -v
 
 sleep 5
 
-# Try to determine the real device. vgscan --mknodes would have
-# created the links as expected, but our /dev won't actually have
-# the device mapper devices since they appeared after the container
-# start.
-# A workaround for that (see moby#27886) is to bind mount the host's /dev,
-# but since we start systemd as well this might/will create issues with
-# the host system.
-# We workaround that by bind-mounting /dev to /host-dev, so that the host's
-# /dev is still available, but we need to determine the correct path
-# by ourselves
 ROOTFS_VOLUME=$(realpath /dev/mapper/droidian-droidian--rootfs)
-ROOTFS_VOLUME=${ROOTFS_VOLUME/\/dev/\/host-dev}
 
 # Create rootfs filesystem
 echo "Creating rootfs filesystem"
