@@ -1,7 +1,3 @@
-[submodule "rootfs-templates"]
-	path = rootfs-templates
-	url = https://github.com/droidian-onclite/rootfs-templates
-        branch = refactor
 [submodule "android-recovery-flashing-template"]
 	path = android-recovery-flashing-template
 	url = https://github.com/droidian-releng/android-recovery-flashing-template.git
