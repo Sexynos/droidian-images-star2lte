@@ -2,7 +2,10 @@
 
 set -e
 
+whoami
+echo "Downloading the image"
 wget -nv https://github.com/droidian-images/droidian/releases/download/droidian%2Fbookworm%2F24/droidian-OFFICIAL-phosh-phone-rootfs-api29-arm64-24_20220804.zip
+echo "Readying up the image"
 unzip droidian-OFFICIAL-phosh-phone-rootfs-api29-arm64-24_20220804.zip
 mkdir ./rootfs/ -p
 resize2fs ./data/rootfs.img 5G
@@ -10,11 +13,14 @@ DEVICE_ROOTFS=$(losetup -f)
 ROOTFS_PATH="./rootfs/"
 losetup ${DEVICE_ROOTFS} ./data/rootfs.img
 mount ${DEVICE_ROOTFS} ${ROOTFS_PATH}
+echo "Installing dependencies"
 apt update
 apt install qemu-user-static -y
-wget adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
-wget adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
+echo "Downloading adaptation"
+wget -nv adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
+wget -nv adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
 cp /usr/bin/qemu-aarch64-static ./rootfs/usr/bin/
+echo "Applying adaptation"
 chroot ./rootfs/ qemu-aarch64-static /bin/bash -c 'export PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin" && rm -f /etc/systemd/system/dbus-org.bluez.service && systemctl mask systemd-resolved systemd-timesyncd upower bluetooth && dpkg -i /*.deb && rm /*.deb /deb -rf && systemctl enable apt-fix samsung-hwc epoch altresolv upoweralt bluetoothalt batman'
 rm ./rootfs/usr/bin/qemu-aarch64-static
 
@@ -128,6 +134,7 @@ cp ./recovery.img ${WORK_DIR}/target/data/recovery.img
 
 # generate zip
 echo "Generating zip"
-(cd ${WORK_DIR}/target ; zip -r9 ../../out/$ZIP_NAME * -x .git README.md *placeholder)
+mkdir ../../out/
+(cd ${WORK_DIR}/target ; zip -r9 ../../out/rootfs.zip * -x .git README.md *placeholder)
 
 echo "done."
