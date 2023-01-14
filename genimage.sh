@@ -2,21 +2,23 @@
 
 set -e
 
-wget https://github.com/droidian-images/droidian/releases/download/droidian%2Fbookworm%2F24/droidian-OFFICIAL-phosh-phone-rootfs-api29-arm64-24_20220804.zip
+wget -nv https://github.com/droidian-images/droidian/releases/download/droidian%2Fbookworm%2F24/droidian-OFFICIAL-phosh-phone-rootfs-api29-arm64-24_20220804.zip
 unzip droidian-OFFICIAL-phosh-phone-rootfs-api29-arm64-24_20220804.zip
 mkdir ./rootfs/ -p
 resize2fs ./data/rootfs.img 5G
-mount ./data/rootfs.img ./rootfs
+DEVICE_ROOTFS=$(losetup -f)
+ROOTFS_PATH="./rootfs/"
+losetup ${DEVICE_ROOTFS} ./data/rootfs.img
+mount ${DEVICE_ROOTFS} ${ROOTFS_PATH}
 apt update
-apt install qemu-user-static wget -y
+apt install qemu-user-static -y
 wget adaptation-droidian-exynos9810_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
 wget adaptation-exynos9810-configs_0.0.0+git20230110092736.88cb61b.main_all.deb -P /rootfs/
 cp /usr/bin/qemu-aarch64-static ./rootfs/usr/bin/
 chroot ./rootfs/ qemu-aarch64-static /bin/bash -c 'export PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin" && rm -f /etc/systemd/system/dbus-org.bluez.service && systemctl mask systemd-resolved systemd-timesyncd upower bluetooth && dpkg -i /*.deb && rm /*.deb /deb -rf && systemctl enable apt-fix samsung-hwc epoch altresolv upoweralt bluetoothalt batman'
 rm ./rootfs/usr/bin/qemu-aarch64-static
 
-ROOTFS_PATH="./rootfs/"
-ROOTFS_SIZE=$(du -sm /rootfs/ | awk '{ print $1 }')
+ROOTFS_SIZE=$(du -sm ${ROOTFS_PATH} | awk '{ print $1 }')
 IMG_SIZE=$(( ${ROOTFS_SIZE} + 250 + 32 + 32 )) # FIXME 250MB + 32MB + 32MB contingency
 IMG_MOUNTPOINT=".image"
 
