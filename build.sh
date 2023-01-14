@@ -26,7 +26,7 @@ wget -nv https://mirror.bardia.tech/exynos9810/pool/main/2libwlroots7c_0.12.0-1h
 cp /usr/bin/qemu-aarch64-static ./rootfs/usr/bin/
 
 echo "Applying adaptation"
-chroot ./rootfs/ qemu-aarch64-static /bin/bash -c 'export PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin" && rm -f /etc/systemd/system/dbus-org.bluez.service && systemctl mask systemd-resolved systemd-timesyncd upower bluetooth && dpkg -i /*.deb && rm /*.deb /deb -rf && systemctl enable apt-fix samsung-hwc epoch altresolv upoweralt bluetoothalt batman && apt-mark hold phosh && apt-mark hold phoc && apt-mark hold libwlroots7c && apt-mark hold lib11-xcb1'
+chroot ./rootfs/ qemu-aarch64-static /bin/bash -c 'export PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin" && rm -f /etc/systemd/system/dbus-org.bluez.service && systemctl mask systemd-resolved systemd-timesyncd upower bluetooth && dpkg -i /*.deb && rm /*.deb /deb -rf && systemctl enable apt-fix samsung-hwc epoch altresolv upoweralt bluetoothalt batman && apt-mark hold phosh && apt-mark hold phoc && apt-mark hold libwlroots7c && apt-mark hold libx11-xcb1'
 rm ./rootfs/usr/bin/qemu-aarch64-static
 
 ROOTFS_SIZE=$(du -sm ${ROOTFS_PATH} | awk '{ print $1 }')
