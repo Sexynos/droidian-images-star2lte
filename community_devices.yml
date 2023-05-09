@@ -13,3 +13,16 @@ samsung_star2lte:
     - adaptation-droidian-exynos9810
     - adaptation-exynos9810-configs
     - qtwayland5
+
+samsung_star2lte-cutie:
+  type: image
+  arch: arm64
+  edition: cutie
+  variant: phone
+  apilevel: 29
+  use_internal_repository: false
+
+  packages:
+    - adaptation-droidian-exynos9810
+    - adaptation-exynos9810-configs
+    - qtwayland5
