@@ -12,7 +12,6 @@ samsung_star2lte:
   packages:
     - adaptation-droidian-exynos9810
     - adaptation-exynos9810-configs
-    - qtwayland5
 
 samsung_star2lte-cutie:
   type: image
@@ -25,4 +24,3 @@ samsung_star2lte-cutie:
   packages:
     - adaptation-droidian-exynos9810
     - adaptation-exynos9810-configs
-    - qtwayland5
